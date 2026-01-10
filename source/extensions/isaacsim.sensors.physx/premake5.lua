@@ -52,7 +52,7 @@ links {
     "isaacSensorSchema",
     "rangeSensorSchema",
     "omni.usd",
-    "isaacsim.util.debug_draw.primitive_drawing",
+    "isaacsim.util.debug_draw.plugin",
 }
 extra_usd_libs = { "usdGeom", "usdPhysics" }
 

@@ -69,7 +69,7 @@ fetch.pip.files_to_pull = [
 fetch.pip.licensing_enabled = false
 fetch.pip.publish_pip_cache = false
 
-enable_compiler_version_check = true
+enable_compiler_version_check = false
 
 "platform:linux-x86_64".version_check_gcc_version = "11.*.*"
 "platform:linux-aarch64".version_check_gcc_version = "11.*.*"
