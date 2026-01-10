@@ -1,0 +1,13 @@
+[package]
+name="cristifg.robo_sim_ext"
+version = "1.0.0"
+title = "Robo Sim Extension"
+description = "Try simulation for robo"
+category = "Simulation"
+
+[dependencies]
+"omni.isaac.core" = {}
+
+[[native.plugin]]
+path = "bin/*.plugin" # or .so for Linux
+class = "cristifg::robo_sim_test::Extension"
