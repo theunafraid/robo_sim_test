@@ -8,8 +8,8 @@ category = "Simulation"
 [dependencies]
 "omni.isaac.core" = {}
 "omni.physx" = {}
-"omni.physxsensors" = {}
 "omni.isaac.sensor" = {}
+"omni.usd" = {}
 
 [[native.plugin]]
 path = "bin/*.plugin" # or .so for Linux

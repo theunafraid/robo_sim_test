@@ -40,11 +40,12 @@ libdirs {
     target_deps .. "/usd/%{cfg.buildcfg}/lib",
     target_deps .. "/usd_ext_physics/%{cfg.buildcfg}/lib",
     "%{root}/_build/target-deps/omni-isaacsim-schema/%{platform}/%{config}/lib",
-    extsbuild_dir .. "omni.usd.core/bin"
+    extsbuild_dir .. "omni.usd.core/bin",
+    "%{root}/_build/linux-x86_64/release/extsbuild/omni.usd.core/bin"
 }
 
 -- Link against Kit/Isaac Sim libraries if needed
-links { "carb", "physxSchema", "isaacSensorSchema" }
+links { "carb", "omni.usd", "physxSchema", "isaacSensorSchema" }
 
 extra_usd_libs = { "usdGeom", "usdPhysics", "usdUtils" }
 

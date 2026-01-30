@@ -16,8 +16,26 @@
 #include <pxr/usd/usdSkel/root.h>
 #include <pxr/usd/usdSkel/bindingAPI.h>
 
+#include <pxr/usd/usd/stage.h>
+#include <pxr/usd/usd/primRange.h>
+#include <pxr/usd/usdSkel/root.h>
+#include <pxr/usd/usdSkel/bindingAPI.h>
+#include <pxr/usd/usdPhysics/articulationRootAPI.h>
+#include <omni/usd/UsdContext.h>
+
 
 using namespace cristifg::robo_sim_test;
+
+
+static usdrt::UsdStageRefPtr getActiveStage()
+    {
+        const std::vector<PXR_NS::UsdStageRefPtr> allStages = PXR_NS::UsdUtilsStageCache::Get().GetAllStages();
+        if (allStages.size() != 1) // only support one USD stage
+            return nullptr;
+
+        auto stage_id = PXR_NS::UsdUtilsStageCache::Get().GetId(allStages[0]).ToLongInt();
+        return usdrt::UsdStage::Attach(omni::fabric::UsdStageId(stage_id));
+    }
 
 
 void Extension::onStartup(const char* extId) {
@@ -46,10 +64,8 @@ void Extension::onStartup(const char* extId) {
             onGlobalUpdate(event);
         });
 
-    /*
-    omni::usd::UsdContext* context = omni::usd::UsdContext::getContext(pxr::TfToken(""));
 
-    if (context) {
+        auto context = omni::usd::UsdContext::getContext(pxr::TfToken(""));
 
         pxr::UsdStageRefPtr stage = context->getStage();
 
@@ -72,7 +88,7 @@ void Extension::onStartup(const char* extId) {
                     if (prim.IsA<pxr::UsdSkelRoot>()) {
                         CARB_LOG_INFO(EXTENSION_NAME " : ROBO_SIM_1 HAS RIG!!!");
 
-                        if (prim.HasAPI<pxr::UsdSkelBindingAPI()) {
+                        if (prim.HasAPI<pxr::UsdSkelBindingAPI>()) {
                             CARB_LOG_INFO(EXTENSION_NAME ": ROBO_SIM_1 HAS skinning present!");
                         }
                     }
@@ -81,7 +97,6 @@ void Extension::onStartup(const char* extId) {
             }
 
         }
-    } */
 }
 
 void Extension::onShutdown() {
