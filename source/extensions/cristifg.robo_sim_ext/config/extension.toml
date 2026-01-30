@@ -7,6 +7,9 @@ category = "Simulation"
 
 [dependencies]
 "omni.isaac.core" = {}
+"omni.physx" = {}
+"omni.physxsensors" = {}
+"omni.isaac.sensor" = {}
 
 [[native.plugin]]
 path = "bin/*.plugin" # or .so for Linux
