@@ -47,7 +47,7 @@ libdirs {
 -- Link against Kit/Isaac Sim libraries if needed
 links { "carb", "omni.usd", "physxSchema", "isaacSensorSchema" }
 
-extra_usd_libs = { "usdGeom", "usdPhysics", "usdUtils" }
+extra_usd_libs = { "usdSkel", "usd", "usdGeom", "usdPhysics", "usdUtils" }
 
 add_usd(extra_usd_libs)
 

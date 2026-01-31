@@ -40,6 +40,7 @@ namespace robo_sim_test {
         void onShutdown() override;
     private:
         carb::eventdispatcher::ObserverGuard        m_subscription;
+        carb::eventdispatcher::ObserverGuard        m_subscriptionStage;
         int32_t                                     m_counter;
 
         carb::events::IEventStreamPtr               m_updateStream;

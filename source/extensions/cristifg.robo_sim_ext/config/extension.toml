@@ -10,6 +10,7 @@ category = "Simulation"
 "omni.physx" = {}
 "omni.isaac.sensor" = {}
 "omni.usd" = {}
+"omni.usd.core" = {}
 
 [[native.plugin]]
 path = "bin/*.plugin" # or .so for Linux

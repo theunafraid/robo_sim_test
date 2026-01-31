@@ -38,6 +38,14 @@ static usdrt::UsdStageRefPtr getActiveStage()
     }
 
 
+static void onStage(carb::events::IEvent* event) {
+
+                if (event->type == (carb::events::EventType)omni::usd::StageEventType::eOpened) {
+                    CARB_LOG_INFO("STAGE OPENED!!!");
+                }
+}
+
+
 void Extension::onStartup(const char* extId) {
     CARB_LOG_INFO("ROBOSIM : ONSTARTUP");
 
@@ -65,24 +73,49 @@ void Extension::onStartup(const char* extId) {
         });
 
 
-        auto context = omni::usd::UsdContext::getContext(pxr::TfToken(""));
+    m_subscriptionStage = ed->observeEvent(
+        carb::RStringKey("cristifg.robo_sim_ext.StageOpenedObserver"),
+        carb::eventdispatcher::kDefaultOrder,
+        carb::RString("omni.usd::stage:opened"),
+        [this](const carb::eventdispatcher::Event& event) {
+            CARB_LOG_INFO("STAGE EVENT!!!");
+
+        auto context = omni::usd::UsdContext::getContext("");
+
+        if (context) {
+            auto stageUrl = context->getStageUrl();
+
+            CARB_LOG_INFO(EXTENSION_NAME " : STAGE URL %s ", stageUrl.c_str());
+        }
 
         pxr::UsdStageRefPtr stage = context->getStage();
-
         if (stage) {
-
+            CARB_LOG_INFO("FOUND STAGE!!!");
             pxr::SdfPath robotPath("/World/RoboSim1");
-
             auto robotPrim = stage->DefinePrim(robotPath, pxr::TfToken("Xform"));
-
             if (robotPrim) {
-
-                robotPrim.GetReferences().AddReference("/home/cristianflorin//robo_sim_1.usdc");
-
+                CARB_LOG_INFO("ROBO PATH");
+                robotPrim.GetReferences().AddReference("/home/cristianflorin//robo_3d/robo_righ.usdc");
                 pxr::UsdPhysicsArticulationRootAPI::Apply(robotPrim);
-
                 auto xform = pxr::UsdGeomXform(robotPrim);
                 xform.AddTranslateOp().Set(pxr::GfVec3d(0.0, 0.0, 0.0));
+
+                // Folosim UsdPrimRange cu o setare specială pentru a vedea în interiorul referințelor
+                auto range = pxr::UsdPrimRange::Stage(stage, pxr::UsdTraverseInstanceProxies());
+
+                for (auto it = range.begin(); it != range.end(); ++it) {
+                pxr::UsdPrim prim = *it;
+
+    // Logăm fiecare Prim găsit pentru debug (doar primele 10 să nu umplem consola)
+    // CARB_LOG_INFO("Checking Prim: %s", prim.GetPath().GetText());
+
+                    if (prim.IsA<pxr::UsdSkelRoot>()) {
+                        CARB_LOG_INFO("!!!! [SUCCESS] FOUND SKELROOT AT: %s", prim.GetPath().GetText());
+                    } else {
+                        CARB_LOG_INFO("NOPE NOT YET!");
+                    }
+                }
+                /*
 
                 for (auto prim : pxr::UsdPrimRange(robotPrim)) {
                     if (prim.IsA<pxr::UsdSkelRoot>()) {
@@ -94,9 +127,17 @@ void Extension::onStartup(const char* extId) {
                     }
                 }
 
-            }
+            */
 
+            }
         }
+        }
+    );
+
+
+
+
+
 }
 
 void Extension::onShutdown() {
